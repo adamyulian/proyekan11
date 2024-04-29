@@ -7,20 +7,14 @@ use App\Models\Post;
 
 class HomeController extends Controller
 {
+    public $latestPosts;
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function __invoke()
     {
-        $posts = Post::take(3)->latest()->get();
-        return view('home', ['posts' => $posts]);
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Post $post)
-    {
-        //
+        $latestPosts = Post::take(3)->latest()->get();
+        return view('home', ['latestPosts' => $latestPosts]);
     }
 }
