@@ -29,7 +29,7 @@ class PostSeeder extends Seeder
 
             // Fetch a random image from Lorem Picsum
             $response = $client->get('https://picsum.photos/200/300', ['stream' => true]);
-            $imagePath = 'images/dummy-image-' . $i . '.jpg'; // Save the image with a unique name
+            $imagePath = 'storage/dummy-image-' . $i . '.jpg'; // Save the image with a unique name
             file_put_contents(public_path($imagePath), $response->getBody()->getContents());
 
             // Generate a random title
@@ -41,6 +41,7 @@ class PostSeeder extends Seeder
                 'title' => $title, // Title
                 'content' => $faker->paragraph, // Generate dummy content using Faker
                 'image' => $imagePath, // Path to the saved image
+                'created_at' => now()
             ]);
         }
     }

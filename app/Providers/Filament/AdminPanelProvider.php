@@ -51,7 +51,7 @@ class AdminPanelProvider extends PanelProvider
                 DisableBladeIconComponents::class,
                 DispatchServingFilamentEvent::class,
             ])
-            ->brandName('Filament Demo')
+            ->brandName('Proyekan.com')
             ->brandLogo(asset('images/proyekan_new.svg'))
             ->authMiddleware([
                 Authenticate::class,

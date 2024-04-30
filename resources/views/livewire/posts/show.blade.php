@@ -29,7 +29,11 @@
                       </h1>
                 </div>
                 <div class="relative group">
-                    <img src="{{ asset($post->image) }}" alt="Post Image" class="object-cover w-full mt-12 border-2 border-teal-500 rounded-t-lg shadow-lg  h-60 ">
+                    @if(Storage::exists($post->image))
+                    <img src="{{ asset(Storage::url($post->image)) }}" alt="Post Image" class="object-cover w-full mt-12 border-2 border-teal-500 rounded-t-lg shadow-lg h-60 ">
+                    @else
+                    <img src="{{ asset($post->image) }}" alt="Post Image" class="object-cover w-full mt-12 border-2 border-teal-500 rounded-t-lg shadow-lg h-60 ">
+                    @endif
                   <p class="mt-5 text-lg leading-6 text-gray-600 line-clamp-3">{{$post->content}}</p>
                 </div>
               </article>

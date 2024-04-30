@@ -8,7 +8,11 @@
               <a href="#" class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100 hover:text-pink-900" >Marketing</a>
             </div>
             <div class="relative group">
-                <img src="{{ asset($post->image) }}" alt="Post Image" class="object-cover w-full mt-2 border-2 border-teal-500 rounded-t-lg shadow-lg hover:border-pink-950 h-60 ">
+                @if(Storage::exists($post->image))
+                    <img src="{{ asset(Storage::url($post->image)) }}" alt="Post Image" class="object-cover w-full mt-2 border-2 border-teal-500 rounded-t-lg shadow-lg hover:border-pink-950 h-60 ">
+                @else
+                    <img src="{{ asset($post->image) }}" alt="Post Image" class="object-cover w-full mt-2 border-2 border-teal-500 rounded-t-lg shadow-lg hover:border-pink-950 h-60 ">
+                @endif
               <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 hover:bg-gray-100 hover:text-pink-900">
                 <a href="{{ route('posts.show', $post->id) }}" wire:key="$post->id">
                   <span class="absolute inset-0"></span>
@@ -36,7 +40,6 @@
             <div class="w-full p-4 bg-white rounded-lg shadow-md">
                 <h2 class="mb-2 text-xl font-semibold">Kategori</h2>
                 <li class="mb-4 text-gray-600">{{$post->title}}</li>
-                {{-- <a href="{{ route('posts.show', $post->id) }}" class="text-blue-500 hover:underline">Read more</a> --}}
             </div>
         </div>
     </div>

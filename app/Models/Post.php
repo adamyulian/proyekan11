@@ -9,6 +9,19 @@ class Post extends Model
 {
     use HasFactory;
 
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
+    protected $fillable = [
+            'user_id',
+            'slug',
+            'content',
+            'image',
+    ];
+
+
 
     // Define the relationship with the User model
     public function user()
