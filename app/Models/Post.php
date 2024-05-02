@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Post extends Model
 {
@@ -19,8 +20,14 @@ class Post extends Model
             'slug',
             'content',
             'image',
+            'title'
     ];
 
+    protected static function booted() {
+        static::creating(function($model) {
+            $model->user_id = Auth::user()->id;
+        });
+    }
 
 
     // Define the relationship with the User model
