@@ -17,7 +17,7 @@
         <div class="hidden md:block">
             <div class="flex items-center ml-4 md:ml-6">
             <div class="relative ml-3">
-                <x-nav-link href="/admin" >Log In <span aria-hidden="true">&rarr;</span></x-nav-link>
+                <livewire:login-status />
             </div>
             </div>
         </div>
@@ -34,7 +34,7 @@
             <!-- Mobile menu button -->
 
             <div class="relative ml-3">
-                <x-nav-link href="/admin" >Log In <span aria-hidden="true">&rarr;</span></x-nav-link>
+                <livewire:login-status />
             </div>
         </div>
         </div>
