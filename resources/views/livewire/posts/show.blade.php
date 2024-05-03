@@ -1,8 +1,8 @@
 <div>
     <div class="flex justify-center">
-        <div class="bg-teal-50 rounded-lg w-3/4">
+        <div class="w-3/4 rounded-lg bg-teal-50">
             <article class="flex flex-col mx-8">
-                <div class="flex justify-between items-center text-xs gap-x-4">
+                <div class="flex items-center justify-between text-xs gap-x-4">
                     <div class="flex-grow mt-8 gap-x-4">
                         <img src="https://images.unsplash.com/photo-1519244703995-f4e0f30006d5?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" class="w-10 h-10 mt-2 rounded-full bg-transparent-50">
                         <div class="text-sm leading-6">
@@ -34,7 +34,8 @@
                     @else
                     <img src="{{ asset($post->image) }}" alt="Post Image" class="object-cover w-full mt-12 border-2 border-teal-500 rounded-t-lg shadow-lg h-60 ">
                     @endif
-                  <p class="mt-5 text-lg leading-6 text-gray-600 line-clamp-3">{{$post->content}}</p>
+                    <p class="mt-5 text-sm leading-6 text-gray-600 line-clamp-3">{!! $post->content !!}</p>
+
                 </div>
               </article>
         </div>

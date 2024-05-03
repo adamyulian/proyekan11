@@ -10,6 +10,6 @@ class Index extends Component
     public function render()
     {
         return view('livewire.posts.index')
-                ->with(['posts' => Post::all()]);
+                ->with(['posts' => Post::latest()->get()]);
     }
 }
