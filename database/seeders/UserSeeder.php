@@ -15,21 +15,28 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
-        // Use the UserFactory to create an admin user
-        User::factory()->create([
-            'name' => 'admin',
-            'email' => 'admin@gmail.com',
-            'email_verified_at' => now(),
-            'password' => Hash::make('password'),
-        ]);
-        // Insert dummy user data
-        for ($i = 1; $i <= 10; $i++) {
-            DB::table('users')->insert([
-                'name' => 'User ' . $i,
-                'email' => 'user' . $i . '@example.com',
-                'email_verified_at' => now(),
-                'password' => Hash::make('password'),
-            ]);
-        }
+       // Check if an admin user already exists
+       $adminEmail = 'admin@gmail.com';
+       $adminExists = User::where('email', $adminEmail)->exists();
+
+       // Create an admin user only if it does not already exist
+       if (!$adminExists) {
+           User::factory()->create([
+               'name' => 'admin',
+               'email' => $adminEmail,
+               'email_verified_at' => now(),
+               'password' => Hash::make('password'),
+           ]);
+       }
+
+       // Insert dummy user data
+       for ($i = 1; $i <= 10; $i++) {
+           DB::table('users')->insert([
+               'name' => 'User ' . $i,
+               'email' => 'user' . $i . '@example.com',
+               'email_verified_at' => now(),
+               'password' => Hash::make('password'),
+           ]);
+       }
     }
 }

@@ -24,4 +24,4 @@ Route::get('/story', [PostController::class, 'index']);
 
 Route::get('/posts', App\Livewire\Posts\Index::class)->name('posts.index');
 
-Route::get('/posts/{postId}', App\Livewire\Posts\Show::class)->name('posts.show');
+Route::get('/posts/{slug}', App\Livewire\Posts\Show::class)->name('posts.show');

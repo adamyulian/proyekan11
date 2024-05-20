@@ -1,5 +1,5 @@
 <div>
-    <div class="flex justify-center">
+    <div class="flex justify-center py-16">
         <div class="w-3/4 rounded-lg bg-teal-50">
             <article class="flex flex-col mx-8">
                 <div class="flex items-center justify-between text-xs gap-x-4">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <h1 class="mt-6 text-6xl font-semibold leading-6 text-gray-900 hover:text-pink-900">
+                    <h1 class="mt-6 text-3xl font-semibold leading-6 text-gray-900 hover:text-pink-900">
                         <a href="#">
                           <span class=""></span>
                           {{$post->title}}
@@ -37,6 +37,9 @@
                     <p class="mt-5 text-sm leading-6 text-gray-600 line-clamp-3">{!! $post->content !!}</p>
 
                 </div>
+                 <!-- Include the BackButton Livewire Component -->
+                 @livewire('back-button')
+
               </article>
         </div>
     </div>

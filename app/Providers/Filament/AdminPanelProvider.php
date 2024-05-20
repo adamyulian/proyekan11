@@ -57,6 +57,7 @@ class AdminPanelProvider extends PanelProvider
             ])
             ->brandName('Proyekan.com')
             ->brandLogo(asset('images/proyekan_new.svg'))
+            ->databaseNotifications()
             ->authMiddleware([
                 Authenticate::class,
             ]);

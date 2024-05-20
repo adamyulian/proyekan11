@@ -11,9 +11,9 @@ class Show extends Component
     public $post;
     public $latestPosts;
 
-    public function mount($postId)
+    public function mount($slug)
     {
-        $this->post = Post::find($postId);
+        $this->post = Post::where('slug', $slug)->firstOrFail();
         $this->latestPosts = Post::take(3)->latest()->get();
     }
 

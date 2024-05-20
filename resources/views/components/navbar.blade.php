@@ -1,4 +1,4 @@
-<nav class="bg-transparent">
+<nav class="fixed top-0 z-50 w-full bg-gray-100/20">
     <div class="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8">
         <div class="flex items-center justify-between h-16">
         <div class="flex items-center">
@@ -7,10 +7,10 @@
             </div>
             <div class="hidden md:block">
             <div class="flex items-baseline ml-10 space-x-4">
-                <x-nav-link href="/" :active="request()->is('/')" icon="icon-star">  Home</x-nav-link>
-                <x-nav-link href="/posts" :active="request()->is('posts')" icon="icon-story">Stories</x-nav-link>
-                <x-nav-link href="/about" :active="request()->is('about')" icon="icon-about">Tentang Kami</x-nav-link>
-                <x-nav-link href="/contact" :active="request()->is('contact')" icon="icon-contact">Hubungi Sekarang!</x-nav-link>
+                <x-nav-link href="/" :active="request()->is('/')" icon="icon-star" wire:navigate>Home</x-nav-link>
+                <x-nav-link href="/posts" :active="request()->is('posts')" icon="icon-story" wire:navigate>Stories</x-nav-link>
+                <x-nav-link href="/about" :active="request()->is('about')" icon="icon-about" wire:navigate>Tentang Kami</x-nav-link>
+                <x-nav-link href="/contact" :active="request()->is('contact')" icon="icon-contact" wire:navigate>Hubungi Sekarang!</x-nav-link>
             </div>
             </div>
         </div>
@@ -24,10 +24,10 @@
         <div class="md:hidden" id="mobile-menu">
             <div class="flex items-center px-2 pt-2 pb-3 space-y-1 sm:px-3">
             <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
-                    <x-nav-link href="/" :active="request()->is('/')">Home</x-nav-link>
-                    <x-nav-link href="/posts" :active="request()->is('posts')">Stories</x-nav-link>
-                    <x-nav-link href="/about" :active="request()->is('about')">About</x-nav-link>
-                    <x-nav-link href="/contact" :active="request()->is('contact')">Contact</x-nav-link>
+                    <x-nav-link href="/" :active="request()->is('/')" wire:navigate>Home</x-nav-link>
+                    <x-nav-link href="/posts" :active="request()->is('posts')" wire:navigate>Stories</x-nav-link>
+                    <x-nav-link href="/about" :active="request()->is('about')" wire:navigate>About</x-nav-link>
+                    <x-nav-link href="/contact" :active="request()->is('contact')" wire:navigate>Contact</x-nav-link>
             </div>
         </div>
         <div class="flex -mr-2 md:hidden">

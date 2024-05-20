@@ -1,6 +1,7 @@
 <x-layout>
-        @include('components.hero')
-
+        <div class="py-10">
+            @include('components.hero')
+        </div>
         @include('components.blog')
 
         @include('components.footer')
