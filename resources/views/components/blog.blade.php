@@ -7,24 +7,24 @@
     <div class="grid max-w-2xl grid-cols-1 pt-10 mx-auto mt-4 gap-x-8 gap-y-16 lg:mx-0 lg:max-w-none lg:grid-cols-3">
 
         @forelse ( $latestPosts as $post )
-        <div class="mt-6 grid-flow-col gap-x-6 gap-y-10 xl:gap-x-8">
-            <div class="group relative">
-              <div class="aspect-h-1 aspect-w-1 w-full overflow-hidden rounded-md bg-slate-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
+        <div class="grid-flow-col mt-6 gap-x-6 gap-y-10 xl:gap-x-8">
+            <div class="relative group">
+              <div class="w-full overflow-hidden rounded-md aspect-h-1 aspect-w-1 bg-slate-200 lg:aspect-none group-hover:opacity-75 lg:h-80">
                         @if(Storage::exists($post->image))
-                        <img src="{{ asset(Storage::url($post->image)) }}" alt="Post Image" class="flex object-cover mt-2 rounded-t-lg shadow-lg h-full w-full">
+                        <img src="{{ asset(Storage::url($post->image)) }}" alt="Post Image" class="flex object-cover w-full h-full mt-2 rounded-t-lg shadow-lg">
                         @else
-                        <img src="{{ asset($post->image) }}" alt="Post Image" class="flex object-cover mt-2 rounded-t-lg shadow-lg h-full w-full">
+                        <img src="{{ asset($post->image) }}" alt="Post Image" class="flex object-cover w-full h-full mt-2 rounded-t-lg shadow-lg">
                         @endif
               </div>
-              <div class="mt-4 flex justify-between">
+              <div class="flex justify-between mt-4">
                 <div>
                   <h3 class="text-xl text-gray-700">
-                    <a href="{{ route('posts.show', $post->id) }}" wire:key="$post->id">
+                    <a href="{{ route('posts.show', $post->slug) }}" wire:key="$post->slug">
                         <span class="row-auto max-h-fit"></span>
                         {{$post->title}}
                     </a>
                   </h3>
-                  <time class="flex items-center text-xs gap-x-4 text-gray-500">{{$post->created_at->diffForHumans()}}</time>
+                  <time class="flex items-center text-xs text-gray-500 gap-x-4">{{$post->created_at->diffForHumans()}}</time>
 
                 </div>
                 <a href="#" class="flex items-center text-xs gap-x-4 relative rounded-full bg-teal-100 px-3 py-1.5 text-gray-600 hover:bg-gray-100 hover:text-pink-900" >Marketing</a>

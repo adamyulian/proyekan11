@@ -1,11 +1,11 @@
-<x-layout>
-        <div class="py-10">
+<x-layouts.app>
+        <div class="py-10 hero font-roboto-slab">
             @include('components.hero')
         </div>
         @include('components.blog')
 
         @include('components.footer')
-</x-layout>
+</x-layouts.app>
 
 
 

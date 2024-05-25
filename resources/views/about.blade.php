@@ -1,8 +1,8 @@
-<x-layout>
+<x-layouts.app>
     <div class="relative py-16 overflow-hidden bg-transparent isolate">
         <div class="px-6 mx-auto max-w-7xl lg:px-8">
           <div class="max-w-2xl mx-auto lg:mx-0">
-            <h2 class="text-4xl font-bold tracking-tight text-gray-900">Tentang Kami</h2>
+            <h2 class="font-sans text-4xl font-bold tracking-tight text-gray-900">Tentang Kami</h2>
             <p class="mt-6 text-lg leading-8 text-gray-600">"Terselip di balik pengalaman kami dalam industri konstruksi adalah pemahaman mendalam tentang pentingnya mengelola sumber daya dengan efisien. Itulah mengapa kami merintis sebuah aplikasi berbasis web untuk membantu mempermudah pengelolaan proyek, dari anggaran hingga tenaga kerja, dengan satu sentuhan jari."</p>
           </div>
           <div class="max-w-2xl mx-auto mt-10 lg:mx-0 lg:max-w-none">
@@ -34,4 +34,4 @@
         </div>
       </div>
       @include('components.footer')
-</x-layout>
+</x-layouts.app>

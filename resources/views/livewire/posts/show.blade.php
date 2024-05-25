@@ -1,6 +1,6 @@
 <div>
     <div class="flex justify-center py-16">
-        <div class="w-3/4 rounded-lg bg-teal-50">
+        <div class="w-3/4 bg-transparent rounded-lg ">
             <article class="flex flex-col mx-8">
                 <div class="flex items-center justify-between text-xs gap-x-4">
                     <div class="flex-grow mt-8 gap-x-4">
@@ -21,7 +21,7 @@
                     </div>
                 </div>
                 <div class="relative">
-                    <h1 class="mt-6 text-3xl font-semibold leading-6 text-gray-900 hover:text-pink-900">
+                    <h1 class="mt-6 text-4xl font-semibold leading-6 text-center text-teal-900 hover:text-pink-900">
                         <a href="#">
                           <span class=""></span>
                           {{$post->title}}
@@ -34,11 +34,14 @@
                     @else
                     <img src="{{ asset($post->image) }}" alt="Post Image" class="object-cover w-full mt-12 border-2 border-teal-500 rounded-t-lg shadow-lg h-60 ">
                     @endif
-                    <p class="mt-5 text-sm leading-6 text-gray-600 line-clamp-3">{!! $post->content !!}</p>
+                    <p class="mt-5 text-lg leading-8 line-clamp-3">{!! $post->content !!}</p>
 
                 </div>
-                 <!-- Include the BackButton Livewire Component -->
-                 @livewire('back-button')
+                <div class="py-4">
+                    <!-- Include the BackButton Livewire Component -->
+                    @livewire('back-button')
+                </div>
+
 
               </article>
         </div>

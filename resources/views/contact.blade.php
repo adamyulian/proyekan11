@@ -1,4 +1,4 @@
-<x-layout>
+<x-layouts.app>
     <!--
   This example requires some changes to your config:
 
@@ -90,4 +90,4 @@
     </form>
   </div>
   @include('components.footer')
-</x-layout>
+</x-layouts.app>

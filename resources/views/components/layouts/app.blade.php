@@ -3,16 +3,18 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <style>
-            @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap');
-        </style>
         <title>{{ $title ?? 'Proyekan.com' }}</title>
+        {{-- @googlefonts('reddit') --}}
+        {{-- <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet"> --}}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100..900&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap" rel="stylesheet">
         @vite('resources/css/app.css')
         <link rel="icon" href="{{ asset('images/proyekan_new.svg') }}" type="image/x-icon"/>
         @livewireStyles
     </head>
     <body>
-        <body class="h-full">
+        <body class="h-full font-roboto">
 
             <!--
               This example requires updating your template:
@@ -22,7 +24,7 @@
               <body class="h-full">
               ```
             -->
-            <div class="min-h-full">
+            <div class="min-h-full font-roboto">
 
                 <div class="absolute inset-x-0 overflow-hidden -top-40 -z-10 transform-gpu blur-3xl sm:-top-80" aria-hidden="true">
                     <div class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#008080] to-[#22577a] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"></div>
@@ -47,5 +49,4 @@
             @livewireScripts
                 </body>
     </body>
-    @include('components.footer')
 </html>

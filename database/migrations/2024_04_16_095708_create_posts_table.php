@@ -14,10 +14,15 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(User::class)->cascade();
+            $table->string('title')->nullable();
+            $table->foreignIdFor(User::class)
+                    ->constrained()
+                    ->cascadeOnDelete()
+                    ->cascadeOnUpdate();
             $table->string('slug')->unique();
             $table->text('content');
             $table->string('image')->nullable();
+            $table->softDeletes();
             $table->timestamps();
         });
     }

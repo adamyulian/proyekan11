@@ -4,12 +4,15 @@ namespace App\Filament\Resources;
 
 use Filament\Forms;
 use App\Models\Unit;
+use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
 use App\Filament\Exports\UnitExporter;
+use App\Filament\Imports\UnitImporter;
 use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ImportAction;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\UnitResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -19,19 +22,29 @@ class UnitResource extends Resource
 {
     protected static ?string $model = Unit::class;
 
+    protected static ?string $navigationGroup = 'Perencanaan';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('nama')
-                    ->required(),
-                Forms\Components\Textarea::make('deskripsi')
+                Forms\Components\TextInput::make('name')
                     ->required()
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('description')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->options(User::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->disabled(auth()->user()->name !== 'admin')
                     ->columnSpanFull(),
                 Forms\Components\Toggle::make('is_published')
                     ->required(),
+
             ]);
     }
 
@@ -40,10 +53,15 @@ class UnitResource extends Resource
         return $table
 
             ->columns([
-                Tables\Columns\TextColumn::make('nama')
+                Tables\Columns\TextColumn::make('name')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('description')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('User')
+                    ->hidden(auth()->user()->name !== 'admin'),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
@@ -74,7 +92,9 @@ class UnitResource extends Resource
             ])
             ->headerActions([
                 ExportAction::make()
-                    ->exporter(UnitExporter::class)
+                    ->exporter(UnitExporter::class),
+                ImportAction::make()
+                    ->importer(UnitImporter ::class)
             ]);
     }
 
