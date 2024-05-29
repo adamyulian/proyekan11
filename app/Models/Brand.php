@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -33,5 +34,9 @@ class Brand extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+    public function components()
+    {
+        return $this->hasMany(Component::class);
     }
 }

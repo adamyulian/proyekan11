@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Filament\Exports\PostExporter;
+use App\Filament\Imports\PostImporter;
 use Filament\Forms;
 use App\Models\Post;
 use App\Models\User;
@@ -12,6 +14,8 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
+use Filament\Tables\Actions\ExportAction;
+use Filament\Tables\Actions\ImportAction;
 use Illuminate\Database\Eloquent\Builder;
 use App\Filament\Resources\PostResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -55,6 +59,12 @@ class PostResource extends Resource
                     ->label('Header Image')
                     ->image()
                     ->required(),
+                Forms\Components\Select::make('user_id')
+                    ->label('User')
+                    ->options(User::all()->pluck('name', 'id'))
+                    ->searchable()
+                    ->disabled(auth()->user()->name !== 'admin')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -96,6 +106,12 @@ class PostResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ])
+            ->headerActions([
+                ExportAction::make()
+                    ->exporter(PostExporter::class),
+                ImportAction::make()
+                    ->importer(PostImporter ::class)
             ]);
     }
 

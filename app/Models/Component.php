@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\SubtaskComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +24,8 @@ class Component extends Model
         'description',
         'unit_id',
         'brand_id',
-        'user_id'
+        'user_id',
+        'is_published'
     ];
 
     protected static function booted() {
@@ -36,5 +38,29 @@ class Component extends Model
         static::updating(function($model) {
             $model->user_id = Auth::user()->id;
         });
+    }
+
+    // Define the relationship with the User model
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function unit()
+    {
+        return $this->belongsTo(Unit::class);
+    }
+
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    public function subtasks()
+    {
+        return $this->belongsToMany(Subtask::class, 'subtask_component')
+        ->using(SubtaskComponent::class)
+        ->withPivot('coeff')
+        ->withTimestamps();
     }
 }

@@ -3,65 +3,89 @@
 namespace App\Filament\Resources;
 
 use Filament\Forms;
-use App\Models\Unit;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Subtask;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
-use App\Filament\Exports\UnitExporter;
-use App\Filament\Imports\UnitImporter;
-use Filament\Tables\Actions\ExportAction;
-use Filament\Tables\Actions\ImportAction;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use App\Filament\Resources\UnitResource\Pages;
+use App\Filament\Resources\SubtaskResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\UnitResource\RelationManagers;
+use App\Filament\Resources\SubtaskResource\RelationManagers;
+use App\Filament\Resources\SubtaskResource\RelationManagers\ComponentsRelationManager;
 
-class UnitResource extends Resource
+class SubtaskResource extends Resource
 {
-    protected static ?string $model = Unit::class;
+    protected static ?string $model = Subtask::class;
 
-    protected static ?string $navigationGroup = 'Perencanaan';
-
-    protected static ?string $navigationIcon = 'heroicon-o-bookmark';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->required(),
+                Forms\Components\Select::make('unit_id')
                     ->required()
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('description')
+                    ->searchable()
+                    ->native(false)
+                    ->preload()
+                    ->relationship(
+                        name: 'unit',
+                        titleAttribute: 'name',
+                        modifyQueryUsing: function (Builder $query) {
+                            $user = Auth::user();
+                            if ($user->name !== 'admin') { // Assuming 'role' is an attribute that indicates if the user is an admin
+                                $query->where('user_id', $user->id)->pluck('id','name')->orderBy('created_at');
+                            }
+                        }
+                        )
+                    ->createOptionForm([
+                            // $userId = Auth::user()->id,
+                            Forms\Components\TextInput::make(name:'nama')
+                            ->required(),
+                            Forms\Components\TextInput::make(name:'deskripsi')
+                            ->required(),
+                            Forms\Components\Toggle::make('is_published')->label('Is Published?'),
+                            Forms\Components\TextInput::make(name:'user_id')
+                            ->default(Auth::user()->id)
+                            ->required()
+                            ->disabled()
+                            ]),
+                Forms\Components\TextInput::make('description')
+                    ->required(),
+                Forms\Components\Toggle::make('is_published')
+                    ->required(),
+                Forms\Components\TextInput::make('user_id')
                     ->required()
-                    ->columnSpanFull(),
+                    ->numeric(),
                 Forms\Components\Select::make('user_id')
                     ->label('User')
                     ->options(User::all()->pluck('name', 'id'))
                     ->searchable()
                     ->disabled(auth()->user()->name !== 'admin')
                     ->columnSpanFull(),
-                Forms\Components\Toggle::make('is_published')
-                    ->required(),
-
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
-
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('unit.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('description')
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean(),
                 Tables\Columns\TextColumn::make('user.name')
-                    ->label('User')
-                    ->hidden(auth()->user()->name !== 'admin'),
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
@@ -88,30 +112,23 @@ class UnitResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-
-            ])
-            ->headerActions([
-                ExportAction::make()
-                    ->exporter(UnitExporter::class),
-                ImportAction::make()
-                    ->importer(UnitImporter ::class)
             ]);
     }
 
     public static function getRelations(): array
     {
         return [
-            //
+            ComponentsRelationManager::class
         ];
     }
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListUnits::route('/'),
-            'create' => Pages\CreateUnit::route('/create'),
-            'view' => Pages\ViewUnit::route('/{record}'),
-            'edit' => Pages\EditUnit::route('/{record}/edit'),
+            'index' => Pages\ListSubtasks::route('/'),
+            'create' => Pages\CreateSubtask::route('/create'),
+            'view' => Pages\ViewSubtask::route('/{record}'),
+            'edit' => Pages\EditSubtask::route('/{record}/edit'),
         ];
     }
 

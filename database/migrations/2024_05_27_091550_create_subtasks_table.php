@@ -2,7 +2,6 @@
 
 use App\Models\Unit;
 use App\Models\User;
-use App\Models\Brand;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -14,25 +13,19 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('components', function (Blueprint $table) {
+        Schema::create('subtasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('type');
-            $table->float('price');
-            $table->text('description');
             $table->foreignIdfor(Unit::class)
             ->constrained()
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
-            $table->foreignIdfor(Brand::class)
-            ->constrained()
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+            $table->string('description');
+            $table->boolean('is_published');
             $table->foreignIdFor(User::class)
             ->constrained()
             ->cascadeOnDelete()
             ->cascadeOnUpdate();
-            $table->boolean('is_published');
             $table->softDeletes();
             $table->timestamps();
         });
@@ -43,6 +36,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('components');
+        Schema::dropIfExists('subtasks');
     }
 };
