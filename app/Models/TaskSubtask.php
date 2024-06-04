@@ -2,21 +2,20 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\Pivot;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Relations\Pivot;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class SubtaskComponent extends Pivot
-
+class TaskSubtask extends Pivot
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'subtask_component';
+    protected $table = 'task_subtask';
 
     protected $fillable = [
+        'task_id',
         'subtask_id',
-        'component_id',
         'coeff'
     ];
 

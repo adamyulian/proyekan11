@@ -59,9 +59,9 @@ class ComponentResource extends Resource
                         )
                     ->createOptionForm([
                             // $userId = Auth::user()->id,
-                            Forms\Components\TextInput::make(name:'nama')
+                            Forms\Components\TextInput::make(name:'name')
                             ->required(),
-                            Forms\Components\TextInput::make(name:'deskripsi')
+                            Forms\Components\TextInput::make(name:'description')
                             ->required(),
                             Forms\Components\Toggle::make('is_published')->label('Is Published?'),
                             Forms\Components\TextInput::make(name:'user_id')
@@ -112,6 +112,7 @@ class ComponentResource extends Resource
                     ->searchable(),
                 Tables\Columns\TextColumn::make('price')
                     ->prefix('Rp. ')
+                    ->numeric(2)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('unit.name')
                     ->numeric()

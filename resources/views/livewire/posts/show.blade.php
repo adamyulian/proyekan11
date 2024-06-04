@@ -47,6 +47,7 @@
         </div>
     </div>
     @include('components.blog')
+    @include('components.footer')
 </div>
 
 

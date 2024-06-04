@@ -2,12 +2,13 @@
 
 namespace App\Filament\Resources\SubtaskResource\RelationManagers;
 
-use App\Models\Component;
-use App\Models\SubtaskComponent;
 use Filament\Forms;
+use App\Models\User;
 use Filament\Tables;
 use Filament\Forms\Form;
+use App\Models\Component;
 use Filament\Tables\Table;
+use Illuminate\Support\Facades\Auth;
 use Filament\Tables\Actions\AttachAction;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
@@ -21,33 +22,34 @@ class ComponentsRelationManager extends RelationManager
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('name')
-                    ->required()
-                    ->maxLength(255),
+               //
             ]);
     }
 
     public function table(Table $table): Table
     {
         return $table
+            ->striped()
             ->recordTitleAttribute('name')
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                 ->description(fn (Component $record): string => $record->type),
                 Tables\Columns\TextColumn::make('coeff'),
+                Tables\Columns\TextColumn::make('price'),
                 Tables\Columns\TextColumn::make('Total')
                 ->state(function (Component $record): float {
                     return $record->price * $record->pivot->coeff;
                 })
-                ->money('IDR')
+                ->prefix('Rp. ')
+                ->numeric(2)
                 ->sortable(),
             ])
             ->filters([
                 Tables\Filters\TrashedFilter::make()
             ])
             ->headerActions([
-                Tables\Actions\CreateAction::make(),
                 Tables\Actions\AttachAction::make()
+                ->label('Tambah Component')
                 ->preloadRecordSelect()
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
@@ -55,8 +57,7 @@ class ComponentsRelationManager extends RelationManager
                 ])
             ])
             ->actions([
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DetachAction::make(),
+                // Tables\Actions\EditAction::make(),
                 Tables\Actions\DeleteAction::make(),
                 Tables\Actions\ForceDeleteAction::make(),
                 Tables\Actions\RestoreAction::make(),
@@ -74,6 +75,11 @@ class ComponentsRelationManager extends RelationManager
             ]))
             ->emptyStateActions([
                 Tables\Actions\CreateAction::make(),
-            ]);
+            ])
+            ->groups([
+                Tables\Grouping\Group::make('type')
+                    ->titlePrefixedWithLabel(false),
+            ])
+            ->heading('Rincian Sub Task');
     }
 }

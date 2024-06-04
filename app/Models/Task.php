@@ -4,13 +4,12 @@ namespace App\Models;
 
 use App\Models\Unit;
 use App\Models\User;
-use App\Models\SubtaskComponent;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Subtask extends Model
+class Task extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -45,17 +44,9 @@ class Subtask extends Model
         return $this->belongsTo(Unit::class);
     }
 
-    public function components()
+    public function subtasks()
     {
-        return $this->belongsToMany(Component::class,'subtask_component')
-        ->using(SubtaskComponent::class)
-        ->withPivot('coeff')
-        ->withTimestamps();
-    }
-
-    public function tasks()
-    {
-        return $this->belongsToMany(Task::class,'task_subtask')
+        return $this->belongsToMany(Subtask::class,'task_subtask')
         ->using(TaskSubtask::class)
         ->withPivot('coeff')
         ->withTimestamps();

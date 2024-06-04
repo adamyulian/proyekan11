@@ -2,15 +2,14 @@
 
 namespace Database\Seeders;
 
-use App\Models\Subtask;
+use App\Models\Task;
 use App\Models\Unit;
 use App\Models\User;
 use Faker\Factory as Faker;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
-
-class SubtaskSeeder extends Seeder
+class TaskSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -28,7 +27,7 @@ class SubtaskSeeder extends Seeder
 
         // Create 10 units with random user_id values
         for ($i = 0; $i < 10; $i++) {
-            Subtask::factory()->create([
+            Task::factory()->create([
                 'name' => $faker->word,
                 'description' => $faker->sentence,
                 'is_published' => $faker->boolean,

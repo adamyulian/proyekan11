@@ -2,33 +2,26 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Exports\SubtaskExporter;
-use App\Filament\Imports\SubtaskImporter;
 use Filament\Forms;
+use App\Models\Task;
 use App\Models\User;
 use Filament\Tables;
-use App\Models\Subtask;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
-use App\Models\SubtaskComponent;
-use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
-use Filament\Infolists;
-use App\Filament\Resources\SubtaskResource\Pages;
+use App\Filament\Resources\TaskResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
-use App\Filament\Resources\SubtaskResource\RelationManagers;
-use App\Filament\Resources\SubtaskResource\RelationManagers\ComponentsRelationManager;
-use App\Models\Component;
+use App\Filament\Resources\TaskResource\RelationManagers;
+use App\Filament\Resources\TaskResource\RelationManagers\SubtasksRelationManager;
+use App\Models\TaskSubtask;
 
-class SubtaskResource extends Resource
+class TaskResource extends Resource
 {
-    protected static ?string $model = Subtask::class;
+    protected static ?string $model = Task::class;
 
-    protected static ?string $navigationGroup = 'Perencanaan';
-
-    protected static ?string $navigationIcon = 'heroicon-o-building-office';
+    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
     {
@@ -36,7 +29,9 @@ class SubtaskResource extends Resource
             ->schema([
                 Forms\Components\TextInput::make('name')
                     ->required(),
-                Forms\Components\Select::make('unit_id')
+                Forms\Components\TextInput::make('description')
+                    ->required(),
+                    Forms\Components\Select::make('unit_id')
                     ->required()
                     ->searchable()
                     ->native(false)
@@ -63,13 +58,9 @@ class SubtaskResource extends Resource
                             ->required()
                             ->disabled()
                             ]),
-                Forms\Components\TextInput::make('description')
-                    ->required(),
                 Forms\Components\Toggle::make('is_published')
                     ->required(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
+
                 Forms\Components\Select::make('user_id')
                     ->label('User')
                     ->options(User::all()->pluck('name', 'id'))
@@ -85,23 +76,35 @@ class SubtaskResource extends Resource
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
+                Tables\Columns\TextColumn::make('description')
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('unit.name')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('description')
-                    ->searchable(),
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('user.name')
-                    ->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->state(function (\App\Models\Subtask $record): float {
-                        return $record->components
-                            ->sum(fn($component) => $component->pivot->coeff * $component->price);
+                        ->state(function (\App\Models\Task $record): float {
+                            // Ambil semua subtasks yang memiliki task_id yang sama beserta komponennya
+                            $subtasks = $record->subtasks()->with('components')->get();
+
+                            // Hitung total sum dari hasil perkalian antara harga subtask dengan coeff dari pivot table task_subtask
+                            $total = 0;
+                            foreach ($subtasks as $subtask) {
+                                $taskSubtaskCoeff = $subtask->pivot->coeff;
+                                $subtotal = $subtask->components
+                                    ->sum(fn($component) => $component->pivot->coeff * $component->price);
+                                $total += $subtotal * $taskSubtaskCoeff;
+                            }
+
+                            return $total;
                         })
                     ->prefix('Rp. ')
                     ->numeric(2)
                     ->label('Planned Price'),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->numeric()
+                    ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()
@@ -128,63 +131,24 @@ class SubtaskResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
-            ])
-            ->headerActions([
-                Tables\Actions\ExportAction::make()
-                    ->exporter(SubtaskExporter::class),
-                Tables\Actions\ImportAction::make()
-                    ->importer(SubtaskImporter ::class)
             ]);
     }
-
-    public static function infolist(Infolist $infolist): Infolist
-
-    {
-        return $infolist
-            ->schema([
-                Infolists\Components\TextEntry::make('name'),
-                Infolists\Components\TextEntry::make('description'),
-                Infolists\Components\TextEntry::make('user.name'),
-                Infolists\Components\TextEntry::make('price')
-                ->state(function (\App\Models\Subtask $record): float {
-                    return $record->components
-                        ->sum(fn($component) => $component->pivot->coeff * $component->price);
-                    })
-                ->money('IDR')
-                ->label('Price')
-                // Infolists\Components\TextEntry::make('Cost')
-                // ->state(function (SubTask $record): float {
-                //     $subtotal = 0;
-                //     $detailcostsubtasks = DetailCostSubTask::select('*')->where('sub_task_id', $record->id)->get();
-                //     foreach ($detailcostsubtasks as $key => $rincian){
-                //         $volume = $rincian->volume;
-                //         $harga_unit = $rincian->costcomponent->hargaunit;
-                //         $subtotal1 = $volume * $harga_unit;
-                //         $subtotal+=$subtotal1;
-                //     }
-                //     return $subtotal;
-                // })
-                // ->money('IDR')
-                // ->label('Cost'),
-
-            ]);
-    }
-
 
     public static function getRelations(): array
     {
         return [
-            ComponentsRelationManager::class
+            SubtasksRelationManager::class
         ];
     }
+
 
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListSubtasks::route('/'),
-            'create' => Pages\CreateSubtask::route('/create'),
-            'view' => Pages\ViewSubtask::route('/{record}'),
-            'edit' => Pages\EditSubtask::route('/{record}/edit'),
+            'index' => Pages\ListTasks::route('/'),
+            'create' => Pages\CreateTask::route('/create'),
+            'view' => Pages\ViewTask::route('/{record}'),
+            'edit' => Pages\EditTask::route('/{record}/edit'),
         ];
     }
 
