@@ -35,7 +35,8 @@ class ComponentsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('name')
                 ->description(fn (Component $record): string => $record->type),
                 Tables\Columns\TextColumn::make('coeff'),
-                Tables\Columns\TextColumn::make('price'),
+                Tables\Columns\TextColumn::make('price')
+                ->label('Component Price'),
                 Tables\Columns\TextColumn::make('Total')
                 ->state(function (Component $record): float {
                     return $record->price * $record->pivot->coeff;

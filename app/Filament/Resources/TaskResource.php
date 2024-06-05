@@ -6,8 +6,13 @@ use Filament\Forms;
 use App\Models\Task;
 use App\Models\User;
 use Filament\Tables;
+use App\Models\Subtask;
+use Filament\Infolists;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
+use App\Models\TaskSubtask;
+use App\Models\SubtaskComponent;
+use Filament\Infolists\Infolist;
 use Filament\Resources\Resource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Builder;
@@ -15,13 +20,14 @@ use App\Filament\Resources\TaskResource\Pages;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 use App\Filament\Resources\TaskResource\RelationManagers;
 use App\Filament\Resources\TaskResource\RelationManagers\SubtasksRelationManager;
-use App\Models\TaskSubtask;
 
 class TaskResource extends Resource
 {
     protected static ?string $model = Task::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+
+    protected static ?string $navigationGroup = 'Perencanaan';
 
     public static function form(Form $form): Form
     {
@@ -101,7 +107,7 @@ class TaskResource extends Resource
                         })
                     ->prefix('Rp. ')
                     ->numeric(2)
-                    ->label('Planned Price'),
+                    ->label('Subtask Price'),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
@@ -131,6 +137,51 @@ class TaskResource extends Resource
                     Tables\Actions\ForceDeleteBulkAction::make(),
                     Tables\Actions\RestoreBulkAction::make(),
                 ]),
+            ]);
+    }
+
+    public static function infolist(Infolist $infolist): Infolist
+
+    {
+        return $infolist
+            ->schema([
+                Infolists\Components\TextEntry::make('name'),
+                Infolists\Components\TextEntry::make('description'),
+                Infolists\Components\TextEntry::make('user.name'),
+                Infolists\Components\TextEntry::make('price')
+                ->state(function (\App\Models\Task $record): float {
+                    // Ambil semua subtasks yang memiliki task_id yang sama beserta komponennya
+                    $subtasks = $record->subtasks()->with('components')->get();
+
+                    // Hitung total sum dari hasil perkalian antara harga subtask dengan coeff dari pivot table task_subtask
+                    $total = 0;
+                    foreach ($subtasks as $subtask) {
+                        $taskSubtaskCoeff = $subtask->pivot->coeff;
+                        $subtotal = $subtask->components
+                            ->sum(fn($component) => $component->pivot->coeff * $component->price);
+                        $total += $subtotal * $taskSubtaskCoeff;
+                    }
+
+                    return $total;
+                })
+                ->prefix('Rp. ')
+                ->numeric(2)
+                ->label('Task Price'),
+                // Infolists\Components\TextEntry::make('Cost')
+                // ->state(function (SubTask $record): float {
+                //     $subtotal = 0;
+                //     $detailcostsubtasks = DetailCostSubTask::select('*')->where('sub_task_id', $record->id)->get();
+                //     foreach ($detailcostsubtasks as $key => $rincian){
+                //         $volume = $rincian->volume;
+                //         $harga_unit = $rincian->costcomponent->hargaunit;
+                //         $subtotal1 = $volume * $harga_unit;
+                //         $subtotal+=$subtotal1;
+                //     }
+                //     return $subtotal;
+                // })
+                // ->money('IDR')
+                // ->label('Cost'),
+
             ]);
     }
 

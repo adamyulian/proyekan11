@@ -151,7 +151,7 @@ class SubtaskResource extends Resource
                         ->sum(fn($component) => $component->pivot->coeff * $component->price);
                     })
                 ->money('IDR')
-                ->label('Price')
+                ->label('Subtask Price')
                 // Infolists\Components\TextEntry::make('Cost')
                 // ->state(function (SubTask $record): float {
                 //     $subtotal = 0;
