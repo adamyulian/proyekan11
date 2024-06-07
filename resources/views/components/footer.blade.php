@@ -25,7 +25,7 @@
                 <a href="#" class="mr-4 hover:underline md:mr-6">FAQs</a>
             </li>
             <li>
-                <a href="#" class="mr-4 hover:underline md:mr-6">Contact</a>
+                <a href="/contact" class="mr-4 hover:underline md:mr-6">Contact</a>
             </li>
         </ul>
         <span class="text-sm text-gray-500 sm:text-center">© 2023-2024 <a href="http://www.proyekan.com" class="hover:underline">Proyekan™</a>. All Rights Reserved.</span>

@@ -3,7 +3,7 @@
         <div class="px-6 mx-auto max-w-7xl lg:px-8">
           <div class="max-w-2xl mx-auto lg:mx-0">
             <h2 class="font-sans text-4xl font-bold tracking-tight text-gray-900">Tentang Kami</h2>
-            <p class="mt-6 text-lg leading-8 text-gray-600">"Terselip di balik pengalaman kami dalam industri konstruksi adalah pemahaman mendalam tentang pentingnya mengelola sumber daya dengan efisien. Itulah mengapa kami merintis sebuah aplikasi berbasis web untuk membantu mempermudah pengelolaan proyek, dari anggaran hingga tenaga kerja, dengan satu sentuhan jari."</p>
+            <p class="mt-6 text-lg leading-8 text-gray-600">"Kami adalah perusahaan yang berfokus pada inovasi di industri konstruksi, dengan pengalaman luas dan pemahaman mendalam tentang efisiensi pengelolaan sumber daya. Kami telah mengembangkan aplikasi berbasis web untuk mempermudah pengelolaan proyek konstruksi, termasuk anggaran dan tenaga kerja, semuanya dapat diakses dengan mudah melalui satu platform web."</p>
           </div>
           <div class="max-w-2xl mx-auto mt-10 lg:mx-0 lg:max-w-none">
             <div class="grid grid-cols-1 text-base font-semibold leading-7 text-gray-900 gap-x-8 gap-y-6 sm:grid-cols-2 md:flex lg:gap-x-10">

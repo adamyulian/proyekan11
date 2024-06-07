@@ -8,7 +8,7 @@
             <div class="hidden md:block">
             <div class="flex items-baseline ml-10 space-x-4">
                 <x-nav-link href="/" :active="request()->is('/')" icon="icon-star" wire:navigate>Home</x-nav-link>
-                <x-nav-link href="/posts" :active="request()->is('posts')" icon="icon-story" wire:navigate>Stories</x-nav-link>
+                <x-nav-link href="/posts" :active="request()->is('posts')" icon="icon-story" wire:navigate>Blog</x-nav-link>
                 <x-nav-link href="/about" :active="request()->is('about')" icon="icon-about" wire:navigate>Tentang Kami</x-nav-link>
                 <x-nav-link href="/contact" :active="request()->is('contact')" icon="icon-contact" wire:navigate>Hubungi Sekarang!</x-nav-link>
             </div>
