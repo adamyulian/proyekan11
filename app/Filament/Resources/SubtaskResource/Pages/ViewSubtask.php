@@ -2,9 +2,11 @@
 
 namespace App\Filament\Resources\SubtaskResource\Pages;
 
-use App\Filament\Resources\SubtaskResource;
 use Filament\Actions;
+use Filament\Actions\Action;
 use Filament\Resources\Pages\ViewRecord;
+use Filament\Support\Enums\IconPosition;
+use App\Filament\Resources\SubtaskResource;
 
 class ViewSubtask extends ViewRecord
 {
@@ -15,6 +17,11 @@ class ViewSubtask extends ViewRecord
 
         return [
             Actions\EditAction::make(),
+            Action::make('print')
+            ->icon('heroicon-m-printer')
+            ->url(fn ($record): string => route('generate-pdf', ['subtask' => $record->id]))
+            ->iconPosition(IconPosition::After)
+            ,
         ];
     }
 }
