@@ -56,7 +56,7 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="header">
-                    <h1>View Subtask</h1>
+                    <h1>Lihat Subtask</h1>
                     <p><strong>Name:</strong> {{ $subtask->name }}</p>
                     <p><strong>Description:</strong> {{ $subtask->description }}</p>
                     <p><strong>User:</strong> {{ $subtask->user->name }}</p>
@@ -94,14 +94,17 @@
                             <td>{{ number_format($component->price, 2) }}</td>
 
                             @php
-                            $totalPrice = $subtask->components
-                                ->sum(fn($component) => $component->pivot->coeff * $component->price);
+                            $totalPrice = $component->pivot->coeff * $component->price;
                             @endphp
-                            <td>Rp. {{ $totalPrice }}</td>
+                            <td>Rp. {{ number_format($totalPrice, 2) }}</td>
 
 
                         </tr>
                     @endforeach
+                    <tr>
+                        <td colspan="3" style="text-align: right;"><strong>Total Price:</strong></td>
+                        <td><strong>Rp. {{ $formattedSubtaskPrice }}</strong></td>
+                    </tr>
                 </tbody>
             </table>
         </div>
