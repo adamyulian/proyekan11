@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Subtask PDF</title>
+    <title>{{ ucfirst($subtask->name) }}</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -56,22 +56,24 @@
         <div class="row">
             <div class="col-md-6">
                 <div class="header">
-                    <h1>Lihat Subtask</h1>
-                    <p><strong>Name:</strong> {{ $subtask->name }}</p>
+                    <h1>Informasi Sub Task </h1>
+                    <p><strong>Name:</strong> {{ ucfirst($subtask->name) }}</p>
+                    <p><strong>Unit:</strong> {{ $subtask->unit->name }}</p>
                     <p><strong>Description:</strong> {{ $subtask->description }}</p>
                     <p><strong>User:</strong> {{ $subtask->user->name }}</p>
                 </div>
             </div>
             <div class="col-md-6">
                 <div class="header">
-                    @php //Calculate total price based on components
+                    @php
+                        // Calculate total price based on components
                         $totalPrice = $subtask->components
                             ->sum(fn($component) => $component->pivot->coeff * $component->price);
 
                         // Format the subtask price
                         $formattedSubtaskPrice = number_format($totalPrice, 2);
                     @endphp
-                    <p><strong>Subtask Price:</strong> Rp. {{ $formattedSubtaskPrice }}</p>
+                    <p><strong>{{ ucfirst($subtask->name) }} Price:</strong> Rp. {{ $formattedSubtaskPrice }} / {{ $subtask->unit->name }}</p>
                 </div>
             </div>
         </div>
@@ -80,30 +82,55 @@
             <table>
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Coeff</th>
-                        <th>Component Price</th>
-                        <th>Total</th>
+                        <th style="text-align: center;">Name</th>
+                        <th style="text-align: center;">Coeff</th>
+                        <th style="text-align: center;">Component Price</th>
+                        <th style="text-align: center;">Total</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($subtask->components as $component)
+                    @php
+                        // Group components by type
+                        $componentsByType = $subtask->components->groupBy('type');
+                        $grandTotal = 0;
+                    @endphp
+
+                    @foreach($componentsByType as $type => $components)
                         <tr>
-                            <td>{{ $component->name }}<br>{{ $component->category }}</td>
-                            <td>{{ $component->pivot->coeff }}</td>
-                            <td>{{ number_format($component->price, 2) }}</td>
-
-                            @php
-                            $totalPrice = $component->pivot->coeff * $component->price;
-                            @endphp
-                            <td>Rp. {{ number_format($totalPrice, 2) }}</td>
-
-
+                            <td colspan="4"><strong>{{ $type }}</strong></td>
                         </tr>
+
+                        @php
+                            $typeSubtotal = 0;
+                        @endphp
+
+                        @foreach($components as $component)
+                            @php
+                                $componentTotal = $component->pivot->coeff * $component->price;
+                                $typeSubtotal += $componentTotal;
+                            @endphp
+
+                            <tr>
+                                <td>{{ $component->name }}</td>
+                                <td>{{ $component->pivot->coeff }}</td>
+                                <td>{{ number_format($component->price, 2) }}</td>
+                                <td>Rp. {{ number_format($componentTotal, 2) }}</td>
+                            </tr>
+                        @endforeach
+
+                        <tr>
+                            <td colspan="3" style="text-align: right;"><strong>Subtotal {{ $type }}:</strong></td>
+                            <td><strong>Rp. {{ number_format($typeSubtotal, 2) }}</strong></td>
+                        </tr>
+
+                        @php
+                            $grandTotal += $typeSubtotal;
+                        @endphp
                     @endforeach
+
                     <tr>
                         <td colspan="3" style="text-align: right;"><strong>Total Price:</strong></td>
-                        <td><strong>Rp. {{ $formattedSubtaskPrice }}</strong></td>
+                        <td><strong>Rp. {{ number_format($grandTotal, 2) }}</strong></td>
                     </tr>
                 </tbody>
             </table>

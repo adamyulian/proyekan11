@@ -2,8 +2,6 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Exports\PostExporter;
-use App\Filament\Imports\PostImporter;
 use Filament\Forms;
 use App\Models\Post;
 use App\Models\User;
@@ -14,6 +12,9 @@ use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Illuminate\Support\Str;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
+use App\Filament\Exports\PostExporter;
+use App\Filament\Imports\PostImporter;
 use Filament\Tables\Actions\ExportAction;
 use Filament\Tables\Actions\ImportAction;
 use Illuminate\Database\Eloquent\Builder;
@@ -71,6 +72,21 @@ class PostResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $userId = Auth::user()->id;
+                $adminId = 1; // ID admin
+
+                if ($userId == $adminId) {
+                    // Jika user adalah admin, jangan filter apa pun
+                    return;
+                } else {
+                    // Jika bukan admin, filter berdasarkan user_id atau admin_id
+                    $query->where(function ($query) use ($userId, $adminId) {
+                        $query->where('user_id', $userId)
+                            ->orWhere('user_id', $adminId);
+                    });
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()

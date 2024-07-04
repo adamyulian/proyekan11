@@ -52,9 +52,18 @@ class ComponentsRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                 ->label('Tambah Component')
                 ->preloadRecordSelect()
+                ->recordSelectOptionsQuery(fn (Builder $query) =>
+                $query->where(fn ($subQuery) =>
+                    $subQuery->whereBelongsTo(auth()->user())
+                             ->orWhere('user_id', 1)
+                )
+            )
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
-                    Forms\Components\TextInput::make('coeff')->required(),
+                    Forms\Components\TextInput::make('coeff')
+                                                ->numeric()
+                                                ->label('Coeff : gunakan tanda (.) untuk koma')
+                                                ->required(),
                 ])
             ])
             ->actions([

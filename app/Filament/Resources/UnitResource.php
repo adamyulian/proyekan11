@@ -9,6 +9,7 @@ use Filament\Tables;
 use Filament\Forms\Form;
 use Filament\Tables\Table;
 use Filament\Resources\Resource;
+use Illuminate\Support\Facades\Auth;
 use App\Filament\Exports\UnitExporter;
 use App\Filament\Imports\UnitImporter;
 use Filament\Tables\Actions\ExportAction;
@@ -51,7 +52,21 @@ class UnitResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $userId = Auth::user()->id;
+                $adminId = 1; // ID admin
 
+                if ($userId == $adminId) {
+                    // Jika user adalah admin, jangan filter apa pun
+                    return;
+                } else {
+                    // Jika bukan admin, filter berdasarkan user_id atau admin_id
+                    $query->where(function ($query) use ($userId, $adminId) {
+                        $query->where('user_id', $userId)
+                            ->orWhere('user_id', $adminId);
+                    });
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),

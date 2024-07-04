@@ -20,10 +20,13 @@ class SubtaskPDFController extends Controller
         // Initialize Dompdf
         $dompdf = new Dompdf();
         $dompdf->loadHtml($pdfContent);
-        $dompdf->setPaper('A4', 'landscape');
+        $dompdf->setPaper('A4', 'portrait');
         $dompdf->render();
 
+        // Set the filename
+        $filename = $subtask->name . '.pdf';
+
         // Stream the generated PDF back to the browser
-        return $dompdf->stream('subtask.pdf');
+        return $dompdf->stream($filename);
     }
 }

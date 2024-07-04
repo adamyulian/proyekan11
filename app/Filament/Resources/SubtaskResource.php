@@ -45,9 +45,18 @@ class SubtaskResource extends Resource
                         name: 'unit',
                         titleAttribute: 'name',
                         modifyQueryUsing: function (Builder $query) {
-                            $user = Auth::user();
-                            if ($user->name !== 'admin') { // Assuming 'role' is an attribute that indicates if the user is an admin
-                                $query->where('user_id', $user->id)->pluck('id','name')->orderBy('created_at');
+                            $userId = Auth::user()->id;
+                            $adminId = 1; // ID admin
+
+                            if ($userId == $adminId) {
+                                // Jika user adalah admin, jangan filter apa pun
+                                return;
+                            } else {
+                                // Jika bukan admin, filter berdasarkan user_id atau admin_id
+                                $query->where(function ($query) use ($userId, $adminId) {
+                                    $query->where('user_id', $userId)
+                                        ->orWhere('user_id', $adminId);
+                                });
                             }
                         }
                         )
@@ -67,9 +76,6 @@ class SubtaskResource extends Resource
                     ->required(),
                 Forms\Components\Toggle::make('is_published')
                     ->required(),
-                Forms\Components\TextInput::make('user_id')
-                    ->required()
-                    ->numeric(),
                 Forms\Components\Select::make('user_id')
                     ->label('User')
                     ->options(User::all()->pluck('name', 'id'))
@@ -82,6 +88,21 @@ class SubtaskResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->modifyQueryUsing(function (Builder $query) {
+                $userId = Auth::user()->id;
+                $adminId = 1; // ID admin
+
+                if ($userId == $adminId) {
+                    // Jika user adalah admin, jangan filter apa pun
+                    return;
+                } else {
+                    // Jika bukan admin, filter berdasarkan user_id atau admin_id
+                    $query->where(function ($query) use ($userId, $adminId) {
+                        $query->where('user_id', $userId)
+                            ->orWhere('user_id', $adminId);
+                    });
+                }
+            })
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
