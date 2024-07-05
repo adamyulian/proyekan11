@@ -52,12 +52,21 @@ class ComponentsRelationManager extends RelationManager
                 Tables\Actions\AttachAction::make()
                 ->label('Tambah Component')
                 ->preloadRecordSelect()
-                ->recordSelectOptionsQuery(fn (Builder $query) =>
-                $query->where(fn ($subQuery) =>
-                    $subQuery->whereBelongsTo(auth()->user())
-                             ->orWhere('user_id', 1)
-                )
-            )
+                ->recordSelectOptionsQuery(function (Builder $query) {
+                    $userId = Auth::user()->id;
+                    $adminId = 1; // ID admin
+
+                    if ($userId == $adminId) {
+                        // Jika user adalah admin, jangan filter apa pun
+                        return;
+                    } else {
+                        // Jika bukan admin, filter berdasarkan user_id atau admin_id
+                        $query->where(function ($query) use ($userId, $adminId) {
+                            $query->where('user_id', $userId)
+                                ->orWhere('user_id', $adminId);
+                        });
+                    }
+                })
                 ->form(fn (AttachAction $action): array => [
                     $action->getRecordSelect(),
                     Forms\Components\TextInput::make('coeff')
