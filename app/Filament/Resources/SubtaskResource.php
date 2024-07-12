@@ -121,8 +121,7 @@ class SubtaskResource extends Resource
                             ->sum(fn($component) => $component->pivot->coeff * $component->price);
                         })
                     ->prefix('Rp. ')
-                    ->numeric(2)
-                    ->label('Planned Price'),
+                    ->numeric(2),
                 Tables\Columns\TextColumn::make('deleted_at')
                     ->dateTime()
                     ->sortable()

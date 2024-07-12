@@ -6,9 +6,9 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\PDFController;
 use App\Http\Controllers\SubtaskPDFController;
 
-Route::get('/', [HomeController::class, '__invoke']);
+Route::get('/', [HomeController::class, '__invoke'])->name('home');
 
-Route::view('/about', 'about');
+Route::view('/about', 'about')->name('about');
 Route::view('/contact', 'contact');
 
 Route::prefix('posts')->name('posts.')->group(function () {

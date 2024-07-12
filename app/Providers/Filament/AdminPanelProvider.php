@@ -6,7 +6,9 @@ use Filament\Pages;
 use Filament\Panel;
 use Filament\Widgets;
 use Filament\PanelProvider;
+use Filament\Navigation\MenuItem;
 use Filament\Support\Colors\Color;
+use App\Filament\Pages\Auth\EditProfile;
 use Filament\Navigation\NavigationGroup;
 use Filament\Http\Middleware\Authenticate;
 use Illuminate\Session\Middleware\StartSession;
@@ -70,6 +72,9 @@ class AdminPanelProvider extends PanelProvider
             ->brandName('Proyekan.com')
             ->brandLogo(asset('images/proyekan_new.svg'))
             ->databaseNotifications()
+            ->userMenuItems([
+                'logout' => MenuItem::make()->postAction(fn (): string => route('about')),
+            ])
             ->authMiddleware([
                 Authenticate::class,
             ]);
