@@ -17,7 +17,7 @@ class TaskSubtaskSeeder extends Seeder
     public function run(): void
     {
         // Clear existing data from the table
-        TaskSubtask::truncate();
+        // TaskSubtask::truncate();
 
         // Generate random data using Faker
         $faker = Faker::create();

@@ -17,7 +17,7 @@ class SubtaskcomponentSeeder extends Seeder
     public function run(): void
     {
         // Clear existing data from the table
-        SubtaskComponent::truncate();
+        // SubtaskComponent::truncate();
 
         // Generate random data using Faker
         $faker = Faker::create();
