@@ -17,6 +17,10 @@ class DefcomponentResource extends Resource
 {
     protected static ?string $model = Defcomponent::class;
 
+    protected static ?string $navigationLabel = 'Default Components';
+
+    protected static ?string $navigationGroup = 'Default Resources';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -60,9 +64,11 @@ class DefcomponentResource extends Resource
                     ->money("Rp.")
                     ->sortable(),
                 Tables\Columns\TextColumn::make('defunit.name')
+                    ->label('Unit')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('defbrand.name')
+                    ->label('Brand')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')

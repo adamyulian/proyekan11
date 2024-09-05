@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Defunit;
 use App\Models\Unit;
 use App\Models\User;
 use Illuminate\Support\Facades\Schema;
@@ -13,14 +14,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('tasks', function (Blueprint $table) {
+        Schema::create('defsubtasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('description');
-            $table->foreignIdfor(Unit::class)
+            $table->foreignIdfor(Defunit::class)
                     ->constrained()
                     ->cascadeOnDelete()
                     ->cascadeOnUpdate();
+            $table->string('description');
             $table->boolean('is_published');
             $table->foreignIdFor(User::class)
                     ->constrained()
@@ -36,6 +37,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('tasks');
+        Schema::dropIfExists('defsubtasks');
     }
 };

@@ -17,6 +17,10 @@ class DefunitResource extends Resource
 {
     protected static ?string $model = Defunit::class;
 
+    protected static ?string $navigationLabel = 'Default Units';
+
+    protected static ?string $navigationGroup = 'Default Resources';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form

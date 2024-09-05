@@ -17,15 +17,15 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->foreignIdfor(Unit::class)
-            ->constrained()
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+                    ->constrained()
+                    ->cascadeOnDelete()
+                    ->cascadeOnUpdate();
             $table->string('description');
             $table->boolean('is_published');
             $table->foreignIdFor(User::class)
-            ->constrained()
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+                    ->constrained()
+                    ->cascadeOnDelete()
+                    ->cascadeOnUpdate();
             $table->softDeletes();
             $table->timestamps();
         });

@@ -10,6 +10,8 @@ class ManageDefunits extends ManageRecords
 {
     protected static string $resource = DefunitResource::class;
 
+    protected ?string $heading = 'Default Units';
+
     protected function getHeaderActions(): array
     {
         return [

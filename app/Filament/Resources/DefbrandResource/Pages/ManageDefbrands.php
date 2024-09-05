@@ -10,6 +10,8 @@ class ManageDefbrands extends ManageRecords
 {
     protected static string $resource = DefbrandResource::class;
 
+    protected ?string $heading = 'Default Brands';
+
     protected function getHeaderActions(): array
     {
         return [

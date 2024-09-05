@@ -21,17 +21,17 @@ return new class extends Migration
             $table->float('price');
             $table->text('description');
             $table->foreignIdfor(Unit::class)
-            ->constrained()
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+                    ->constrained()
+                    ->cascadeOnDelete()
+                    ->cascadeOnUpdate();
             $table->foreignIdfor(Brand::class)
-            ->constrained()
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+                    ->constrained()
+                    ->cascadeOnDelete()
+                    ->cascadeOnUpdate();
             $table->foreignIdFor(User::class)
-            ->constrained()
-            ->cascadeOnDelete()
-            ->cascadeOnUpdate();
+                    ->constrained()
+                    ->cascadeOnDelete()
+                    ->cascadeOnUpdate();
             $table->boolean('is_published');
             $table->softDeletes();
             $table->timestamps();

@@ -17,6 +17,10 @@ class DefbrandResource extends Resource
 {
     protected static ?string $model = Defbrand::class;
 
+    protected static ?string $navigationLabel = 'Default Brands';
+
+    protected static ?string $navigationGroup = 'Default Resources';
+
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
     public static function form(Form $form): Form
@@ -49,7 +53,7 @@ class DefbrandResource extends Resource
                     ->searchable(),
                 Tables\Columns\IconColumn::make('is_published')
                     ->boolean(),
-                Tables\Columns\TextColumn::make('user_id')
+                Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('deleted_at')
