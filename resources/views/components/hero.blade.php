@@ -3,7 +3,7 @@
             <div class="max-w-2xl py-2 mx-auto sm:py-2 lg:py-2">
               <div class="hidden sm:mb-8 sm:flex sm:justify-center">
                 <div class="relative px-3 py-1 text-sm leading-6 text-gray-600 rounded-full ring-1 ring-gray-900/10 hover:ring-gray-900/20">
-                    Tingkatkan level perencanaan proyek anda. <a href="#" class="font-semibold text-teal-600 hover:text-pink-900"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
+                    Tingkatkan level perencanaan proyek anda. <a href="/about" class="font-semibold text-teal-600 hover:text-pink-900"><span class="absolute inset-0" aria-hidden="true"></span>Read more <span aria-hidden="true">&rarr;</span></a>
                 </div>
               </div>
               <div class="text-center">
